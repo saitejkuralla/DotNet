@@ -14,6 +14,8 @@ namespace Services.Validations
             RuleFor(x => x.Username).NotEmpty().WithMessage("Username Required");
 
             RuleFor(x => x.EmailAddress).NotEmpty().WithMessage("EmailAddress Required");
+
+            
         }
     }
 }

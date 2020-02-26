@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Services.Utility;
-using Services.Validations;
 
 namespace Services.Controllers
 {
@@ -25,6 +21,7 @@ namespace Services.Controllers
         // GET api/values
         [HttpGet]
         //[Route("api/values1")]
+      
         public ActionResult<IEnumerable<string>> Get()
         {
             var login = new UserModel()
@@ -58,13 +55,14 @@ namespace Services.Controllers
 
 
 
-        [AllowAnonymous]
+      
         [HttpPost]
-        public ActionResult<IEnumerable<string>> Post(UserModel model)
+        [ModelValidator(typeof(UserModel))]
+        public void Post(UserModel model)
         {
            
-
-            return new string[] { "Test"};
+         
+         
         }
         private string GenerateJSONWebToken(UserModel userInfo)
         {
@@ -95,10 +93,20 @@ namespace Services.Controllers
         // GET api/values/5
         [HttpGet("{id}")]
         // [Authorize(AuthenticationSchemes = "Bearer")]
-        [CustomAuthorization]
-        public ActionResult<string> Get(int id)
+      //  [CustomAuthorization]
+        public ActionResult <List<UserModel> >Get(int id)
         {
-            return "value";
+            List<UserModel> model = new List<UserModel>();
+
+            model.Add(new UserModel()
+            {
+                Username = "Jignesh Trivedi",
+                EmailAddress = "test.btest@gmail.com",
+               
+
+            });
+
+            return Ok( model);
         }
 
         // POST api/values

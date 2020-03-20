@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccessLayer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -30,11 +32,21 @@ namespace Services
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        [Obsolete]
         public void ConfigureServices(IServiceCollection services)
         {
 
 
-     
+
+
+            //-----------------EntityFramework----------------//
+
+            services.AddDbContext<MyDbContext>(options =>
+             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            //----------------------------------------------------//
+
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -65,14 +77,15 @@ namespace Services
             });
 
 
-            services.AddMvc(config=> {
+            services.AddMvc(config =>
+            {
 
                 config.RespectBrowserAcceptHeader = true;
                 config.InputFormatters.Add(new XmlSerializerInputFormatter());
                 config.OutputFormatters.Add(new XmlSerializerOutputFormatter());
 
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-               // .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            // .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             ;
         }
 

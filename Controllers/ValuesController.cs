@@ -93,7 +93,7 @@ namespace Services.Controllers
         // GET api/values/5
         [HttpGet("{id}")]
         // [Authorize(AuthenticationSchemes = "Bearer")]
-      //  [CustomAuthorization]
+        [CustomAuthorization]
         public ActionResult <List<UserModel> >Get(int id)
         {
             List<UserModel> model = new List<UserModel>();
@@ -122,6 +122,17 @@ namespace Services.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+
+
+        public int Add(int a, int b, int c)
+        {
+            return a + b + c;
+        }
+        public string Add(int a, int b, string c)
+        {
+            return "";
         }
     }
 }
